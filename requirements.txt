@@ -1,0 +1,17 @@
+# Core RAG dependencies for rag_assistant.
+# Versions pinned to recent, mutually compatible releases (adjust as needed).
+
+datasets>=2.19,<4.0
+pandas>=2.2,<3.0
+numpy>=1.26,<3.0
+qdrant-client>=1.9,<2.0
+sentence-transformers>=2.7,<4.0
+anthropic>=0.34,<1.0
+python-dotenv>=1.0,<2.0
+pyyaml>=6.0,<7.0
+tqdm>=4.66,<5.0
+matplotlib>=3.8          # publication figures
+mcp[cli]>=1.2            # MCP server (FastMCP) exposing the retriever tool
+
+# parquet I/O for corpus/eval files (used by datasets/pandas)
+pyarrow>=15.0

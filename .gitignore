@@ -1,0 +1,44 @@
+# Secrets - never commit real keys
+.env
+.env.*
+!.env.example
+
+# Data (raw + processed) - produced locally / by the data engineer.
+# Ignore everything under data/ EXCEPT the .gitkeep placeholder. Note: we cannot
+# use a bare "data/" rule here, because git will not re-include a file inside a
+# fully-excluded directory. Excluding the contents (data/*) keeps the negation working.
+data/*
+!data/.gitkeep
+
+# Local Qdrant embedded storage
+qdrant_storage/
+*.qdrant
+
+# Evaluation run outputs (logs, parquets, csvs, raw run figures). The figures used in
+# the README are committed under docs/; everything generated at run time stays local.
+eval/results/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model / HF caches (optional, large)
+.cache/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,44 @@
+direction: right
+
+title: |md
+  # Multi-Agent RAG Knowledge Assistant
+| {near: top-center; style.font-size: 20; style.bold: true}
+
+ingest: Ingestion (offline) {
+  style.fill: "#EAF3FB"
+  docs: "Documents\n(12,000 passages)" {shape: document}
+  chunk: "Chunking\n900 / 150 overlap" {shape: rectangle}
+  embed: "Embedding\nbge-small (GPU)" {shape: rectangle}
+  docs -> chunk -> embed
+}
+
+store: "Vector DB\nQdrant (cosine)" {shape: cylinder; style.fill: "#FFF3DA"}
+ingest.embed -> store: index 60,851 chunks
+
+query: Query-time (multi-agent) {
+  style.fill: "#E9F7F0"
+  user: "User question" {shape: oval}
+  router: "Router agent\n(Claude Haiku)" {shape: hexagon}
+  search: "search_knowledge_base\ntool / function call" {shape: rectangle}
+  answer: "Answer agent\n(Claude + tool use)" {shape: hexagon}
+  out: "Cited answer\n[ctx_000123]" {shape: oval; style.fill: "#D8F0E4"}
+  user -> router
+  router -> answer: "needs retrieval"
+  router -> out: "chit-chat (direct)" {style.stroke-dash: 4}
+  answer -> search: call
+  answer -> out
+}
+
+query.search -> store: top-5 (k)
+store -> query.search: passages
+
+mcp: "MCP server\n(exposes search tool)" {shape: rectangle; style.fill: "#F3E9FB"}
+mcp -> store: reuses index
+
+eval: Evaluation {
+  style.fill: "#FBEAEA"
+  r: "Retrieval:\nRecall@k, nDCG@k, MRR" {shape: rectangle}
+  g: "Generation:\nRAG Triad + answer correctness" {shape: rectangle}
+}
+query.out -> eval.g
+store -> eval.r {style.stroke-dash: 3}
