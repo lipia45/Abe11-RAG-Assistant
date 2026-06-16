@@ -148,5 +148,3 @@ any committed file.
   noise; a cross-encoder reranker is the clear next improvement.
 - Metrics are computed on samples (800 retrieval queries; 300 generations; 150 judged)
   with `bge-small`; larger samples / a stronger embedder would tighten the estimates.
-- A hallucination-leaderboard comparison (Vectara HHEM) was attempted but blocked by a
-  model/transformers incompatibility; faithfulness is instead reported via the RAG Triad.
