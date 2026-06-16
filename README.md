@@ -77,6 +77,25 @@ Reproducing the published scores (SciFact essentially exact) confirms the retrie
 configured to the standard protocol — which in turn validates the metric numbers reported
 above on the project corpus.
 
+## End-to-end robustness on RGB (standard benchmark)
+
+Beyond retrieval, the full answer pipeline was evaluated on the **RGB benchmark**
+(Chen et al., AAAI 2024) — a standard RAG benchmark that mixes relevant and noise
+documents and scores whether the generated answer is correct. Run on the standard
+English set (300 questions); generator = Claude Haiku 4.5.
+
+| Noise ratio | Answer accuracy (ours) |
+|---|---|
+| 0.0 | 0.983 |
+| 0.4 | 0.973 |
+| 0.8 | **0.937** |
+
+RGB is designed to break down at high noise: the paper's ChatGPT baseline falls to
+**0.760** at 0.8 noise, while this pipeline holds **0.937** — substantially stronger
+noise robustness.
+
+![RGB noise robustness](docs/fig-rgb-noise-robustness.png)
+
 ## Pipeline / how to run
 
 ```bash
@@ -129,3 +148,5 @@ any committed file.
   noise; a cross-encoder reranker is the clear next improvement.
 - Metrics are computed on samples (800 retrieval queries; 300 generations; 150 judged)
   with `bge-small`; larger samples / a stronger embedder would tighten the estimates.
+- A hallucination-leaderboard comparison (Vectara HHEM) was attempted but blocked by a
+  model/transformers incompatibility; faithfulness is instead reported via the RAG Triad.
