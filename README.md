@@ -96,6 +96,31 @@ noise robustness.
 
 ![RGB noise robustness](docs/fig-rgb-noise-robustness.png)
 
+## End-to-end on FRAMES (multi-hop benchmark)
+
+The system was also run on the full **FRAMES** benchmark (Krishna et al., Google, NAACL
+2025) — 824 multi-hop questions, retrieving over a 2,524-article Wikipedia corpus and
+scored by an LLM auto-rater against gold answers.
+
+| System | FRAMES accuracy |
+|---|---|
+| Paper baseline — single-step, no retrieval | 0.40 |
+| Paper — multi-step retrieval | 0.66 |
+| **This system — single-pass RAG (bge-small + Haiku 4.5)** | **0.337** |
+
+FRAMES is deliberately hard: each question needs facts combined across 2–15 articles,
+which a single retrieval pass cannot fully gather. The 0.337 honestly reflects the limit
+of single-pass RAG on multi-hop questions; the paper shows **iterative multi-step
+retrieval reaches 0.66**, which is the clear next improvement (the agent's tool-use loop
+already supports multiple retrieval calls). This is reported as a baseline, not a tuned
+result.
+
+> Note on leaderboards: MTEB and the Vectara hallucination leaderboard rank embedding
+> *models* / LLMs (bge-small is already listed), and the CRAG KDD Cup is closed — there is
+> no public board to submit a *pipeline* to. This project instead reproduces published
+> BEIR retrieval numbers and reports open end-to-end benchmark scores (RGB, FRAMES) with
+> their official metrics.
+
 ## Pipeline / how to run
 
 ```bash
